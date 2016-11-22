@@ -26,15 +26,8 @@ import org.slf4j.LoggerFactory;
 public class NativeOps extends Pointer {
     private static Logger log = LoggerFactory.getLogger(NativeOps.class);
     static {
-        // using our custom platform properties from resources, and on user request,
-        // load in priority libraries found in the library path over bundled ones
-        String platform = Loader.getPlatform();
-        Properties properties = Loader.loadProperties(platform + "-nd4j", platform);
-        properties.remove("platform.preloadpath");
-        String s = System.getProperty("org.nd4j.nativeblas.pathsfirst", "false").toLowerCase();
-        boolean pathsFirst = s.equals("true") || s.equals("t") || s.equals("");
         try {
-            Loader.load(NativeOps.class, properties, pathsFirst);
+            Loader.load(NativeOps.class);
         } catch (UnsatisfiedLinkError e) {
             throw new RuntimeException("ND4J is probably missing dependencies. For more information, please refer to: http://nd4j.org/getstarted.html", e);
         }
